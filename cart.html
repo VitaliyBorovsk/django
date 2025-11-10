@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .cart-container {
+            width: 80%;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        .cart-item-title {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        .cart-item-quantity input {
+            width: 50px;
+            text-align: center;
+            margin: 0 10px;
+        }
+        .cart-item-price {
+            width: 100px;
+            text-align: right;
+        }
+        .cart-total {
+            text-align: right;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .order-button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: #fff;
+            text-align: center;
+            font-size: 1.2em;
+            text-decoration: none;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .quantity-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .quantity-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/100" alt="Product Image">
+            <div class="cart-item-info">
+                <div class="cart-item-title">Product 1</div>
+                <div class="cart-item-quantity">
+                    <button class="quantity-button">-</button>
+                    <input type="text" value="1">
+                    <button class="quantity-button">+</button>
+                </div>
+            </div>
+            <div class="cart-item-price">$10.00</div>
+        </div>
+        <div class="cart-item">
+            <img src="https://via.placeholder.com/100" alt="Product Image">
+            <div class="cart-item-info">
+                <div class="cart-item-title">Product 2</div>
+                <div class="cart-item-quantity">
+                    <button class="quantity-button">-</button>
+                    <input type="text" value="2">
+                    <button class="quantity-button">+</button>
+                </div>
+            </div>
+            <div class="cart-item-price">$20.00</div>
+        </div>
+        <div class="cart-total">Total: $50.00</div>
+        <button class="order-button">Order</button>
+    </div>
+</body>
+</html>
