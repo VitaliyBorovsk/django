@@ -38,9 +38,17 @@ class Player(pg.sprite.Sprite):
         self.damage_timer = pg.time.get_ticks()
         self.damage_interval = 1000
 
+
+
+
+
+
+
+
     def load_animations(self):
+        self.animation_timer = pg.time.get_ticks()
         tile_size = 128
-        tile_scale = 0.6
+        tile_scale = 1
 
         self.idle_animation_right = []
 
@@ -57,47 +65,83 @@ class Player(pg.sprite.Sprite):
 
         self.idle_animation_left = [pg.transform.flip(image, True, False) for image in self.idle_animation_right]
 
-        self.move_animation_right = []
 
-        num_images = 2
-        spritesheet = pg.image.load("craftpix-net-679950-free-raider-sprite-sheets-pixel-art/Raider_1/Idle.png")
 
+        self.run_animation_right = []
+        spritesheet = pg.image.load("craftpix-net-679950-free-raider-sprite-sheets-pixel-art/Raider_1/Run.png")
+        num_images = 8
         for i in range(num_images):
             x = i * tile_size  # Начальная координата X изображения в спрайтшите
             y = 0  # Начальная координата Y изображения в спрайтшите
             rect = pg.Rect(x, y, tile_size, tile_size)  # Прямоугольник, который определяет область изображения
             image = spritesheet.subsurface(rect)  # Вырезаем изображение из спрайтшита
             image = pg.transform.scale(image, (tile_size * tile_scale, tile_size * tile_scale))
-            self.move_animation_right.append(image)  # Добавляем изображение в список
+            self.run_animation_right.append(image)  # Добавляем изображение в список
 
-        self.move_animation_left = [pg.transform.flip(image, True, False) for image in self.move_animation_right]
+        self.run_animation_left = [pg.transform.flip(image, True, False) for image in self.run_animation_right]
+
+
+        self.jump_animation_right = []
+        spritesheet = pg.image.load("craftpix-net-679950-free-raider-sprite-sheets-pixel-art/Raider_1/Jump.png")
+        num_images = 11
+        for i in range(num_images):
+            x = i * tile_size  # Начальная координата X изображения в спрайтшите
+            y = 0  # Начальная координата Y изображения в спрайтшите
+            rect = pg.Rect(x, y, tile_size, tile_size)  # Прямоугольник, который определяет область изображения
+            image = spritesheet.subsurface(rect)  # Вырезаем изображение из спрайтшита
+            image = pg.transform.scale(image, (tile_size * tile_scale, tile_size * tile_scale))
+            self.jump_animation_right.append(image)  # Добавляем изображение в список
+
+        self.jump_animation_left = [pg.transform.flip(image, True, False) for image in self.jump_animation_right]
+
+
+
+    def animate(self):
+        self.current_image +=1
+        if self.current_image > len(self.current_animation) -1:
+            self.current_image = 0
+        if pg.time.get_ticks() -self.animation_timer > 50:
+            self.image = self.current_animation[self.current_image]
+            self.animation_timer = pg.time.get_ticks()
+
+
+
+
 
     def update(self, platforms):
+        self.animate()
         keys = pg.key.get_pressed()
         if keys[pg.K_SPACE] and not self.is_jumping:
+            if self.current_animation != self.jump_animation_left:
+                self.current_animation = self.jump_animation_right
+                self.current_image = 0
+            elif self.current_animation != self.jump_animation_right:
+                self.current_animation = self.jump_animation_left
+                self.current_image = 0
             self.jump()
 
         if keys[pg.K_a]:
-            if self.current_animation != self.move_animation_left:
-                self.current_animation = self.move_animation_left
+            if self.current_animation != self.run_animation_left:
+                self.current_animation = self.run_animation_left
                 self.current_image = 0
 
             self.velocity_x = -1
         elif keys[pg.K_d]:
-            if self.current_animation != self.move_animation_right:
-                self.current_animation = self.move_animation_right
+            if self.current_animation != self.run_animation_right:
+                self.current_animation = self.run_animation_right
                 self.current_image = 0
 
             self.velocity_x = 1
         else:
-            if self.current_animation == self.move_animation_right:
+            if self.current_animation == self.run_animation_right:
                 self.current_animation = self.idle_animation_right
                 self.current_image = 0
-            elif self.current_animation == self.move_animation_left:
+            elif self.current_animation == self.run_animation_left:
                 self.current_animation = self.idle_animation_left
                 self.current_image = 0
 
-            self.velocity_x = 1
+
+            self.velocity_x = 0
 
         new_x = self.rect.x + self.velocity_x
         if 0 <= new_x <= self.map_width - self.rect.width:
@@ -218,3 +262,4 @@ class Game:
 
 if __name__ == "__main__":
     game = Game()
+
